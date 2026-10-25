@@ -20,3 +20,14 @@ Content-Type: application/json
 
 ### Eliminar alumno: 204
 DELETE {{baseUrl}}/alumnos/1
+
+
+
+### Reto 5 - Todos los alumnos, sin filtro
+GET http://localhost:8080/api/v1/alumnos
+
+### Reto 5 - Solo alumnos activos
+GET http://localhost:8080/api/v1/alumnos?estatus=ACTIVO
+
+### Reto 5 - Solo alumnos dados de baja
+GET http://localhost:8080/api/v1/alumnos?estatus=BAJA

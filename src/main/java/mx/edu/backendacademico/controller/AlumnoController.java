@@ -2,6 +2,10 @@ package mx.edu.backendacademico.controller;
 
 // Traduce HTTP a llamadas de aplicación y construye respuestas mediante DTO.
 
+import mx.edu.backendacademico.domain.EstatusAlumno;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 import java.net.URI;
 import java.util.List;
 import mx.edu.backendacademico.dto.ActualizarAlumnoRequest;
@@ -27,8 +31,14 @@ public class AlumnoController {
 
     // GET consulta sin solicitar cambios de estado de negocio.
     @GetMapping
-    public List<AlumnoResponse> listar() { return service.listar().stream().map(AlumnoMapper::toResponse).toList(); }
+    public List<AlumnoResponse> listar(
+            @RequestParam(required = false) EstatusAlumno estatus) {
 
+        return service.listar().stream()
+                .filter(alumno -> estatus == null || alumno.estatus() == estatus)
+                .map(AlumnoMapper::toResponse)
+                .toList();
+    }
     // GET consulta sin solicitar cambios de estado de negocio.
     @GetMapping("/{id}")
     public AlumnoResponse buscar(@PathVariable Long id) { return AlumnoMapper.toResponse(service.buscar(id)); }
