@@ -31,3 +31,15 @@ POST {{baseUrl}}/alumnos
 Content-Type: application/json
 
 {"matricula":"A001","nombre":"Otra persona","correo":"otra@universidad.mx"}
+
+
+
+### Reto U06: rechazar matrícula con espacio interno (400)
+POST {{baseUrl}}/alumnos
+Content-Type: application/json
+
+{
+  "matricula": "A 001",
+  "nombre": "Ada Lovelace",
+  "correo": "ada@universidad.mx"
+}
