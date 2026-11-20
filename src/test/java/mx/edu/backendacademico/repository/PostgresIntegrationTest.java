@@ -14,6 +14,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 @SpringBootTest
 @Testcontainers
 class PostgresIntegrationTest {
@@ -45,4 +47,36 @@ class PostgresIntegrationTest {
         // Las llamadas anteriores pasaron por el proxy real y terminaron su transacción.
         assertEquals(1, inscripciones.countByMateriaId(materia.getId()));
     }
+
+    @Test
+    void postgresRechazaMatriculaDuplicada() {
+        var primero = new AlumnoEntity(
+                new Alumno(
+                        null,
+                        "U9_UNIQUE_1",
+                        "Ada",
+                        "ada1@u.mx",
+                        EstatusAlumno.ACTIVO
+                )
+        );
+
+        var segundo = new AlumnoEntity(
+                new Alumno(
+                        null,
+                        "U9_UNIQUE_1",
+                        "Emmy",
+                        "emmy@u.mx",
+                        EstatusAlumno.ACTIVO
+                )
+        );
+
+        alumnos.saveAndFlush(primero);
+
+        assertThrows(
+                DataIntegrityViolationException.class,
+                () -> alumnos.saveAndFlush(segundo)
+        );
+    }
+
+
 }
