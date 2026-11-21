@@ -50,4 +50,17 @@ public class AlumnoRepositoryEnMemoria implements AlumnoRepository {
     public synchronized void eliminarPorId(Long id) {
         datos.remove(id);
     }
+
+
+    @Override
+    public Optional<Alumno> buscarPorUsuario(String usuario) {
+        throw new UnsupportedOperationException(
+                "La búsqueda por usuario requiere el adaptador JPA.");
+    }
+
+    @Override
+    public boolean perteneceAUsuario(Long alumnoId, String usuario) {
+        return false;
+    }
+
 }
